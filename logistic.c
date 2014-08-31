@@ -3,6 +3,7 @@
 #include <string.h>
 #include <mpi.h>
 #include "vec_type.h"
+#include "vector_functions.h"
 
 void logistic(Vec_Type starting_val, Vec_Type *buffer, int iterations) {
     int i;
@@ -46,7 +47,7 @@ int main(int argc, char **argv) {
     residual_sum = vector_reduce(0.0, residual, &v_type_add, store_size);
    
     if (residual_sum != 0.0) {
-        printf("Rank %d differed from rank 0: residual sum = %.24g\n");
+        printf("Rank %d differed from rank 0: residual sum = %.24g\n", my_rank, residual_sum);
     }
 
     MPI_Finalize();
