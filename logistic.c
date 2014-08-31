@@ -44,8 +44,10 @@ int main(int argc, char **argv) {
     vector_abs(residual, store_size);
 
     residual_sum = vector_reduce(0.0, residual, &v_type_add, store_size);
-    
-    printf("%d: %.12g\n", my_rank, residual_sum);
+   
+    if (residual_sum != 0.0) {
+        printf("Rank %d differed from rank 0: residual sum = %.24g\n");
+    }
 
     MPI_Finalize();
     return 0;
