@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <mpi.h>
 #include "vec_type.h"
 
 void logistic(Vec_Type starting_val, Vec_Type *buffer, int iterations) {
@@ -34,17 +36,18 @@ int main(int argc, char **argv) {
     if (my_rank == 0) {
         memcpy(root_map, map_store, store_size * sizeof(Vec_Type));
     }
-    
+ 
     ierr = MPI_Bcast(root_map, store_size, MY_MPI_VEC_TYPE, 0, MPI_COMM_WORLD);
-
+    
     vector_subtract(residual, map_store, root_map, store_size);
 
     vector_abs(residual, store_size);
 
-    residual_sum = vector_reduce(0, residual, &v_type_add, store_size);
+    residual_sum = vector_reduce(0.0, residual, &v_type_add, store_size);
     
     printf("%d: %.12g\n", my_rank, residual_sum);
-    
+
+    MPI_Finalize();
     return 0;
 }
 
