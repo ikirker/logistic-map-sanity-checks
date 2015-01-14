@@ -5,6 +5,8 @@
 #include "vec_type.h"
 #include "vector_functions.h"
 
+const double starting_value = 0.2;
+
 void logistic(Vec_Type starting_val, Vec_Type *buffer, int iterations) {
     int i;
     Vec_Type x = starting_val;
@@ -32,7 +34,7 @@ int main(int argc, char **argv) {
     Vec_Type residual[store_size];
     Vec_Type residual_sum;
 
-    logistic(0.2, map_store, store_size);
+    logistic(starting_value, map_store, store_size);
 
     if (my_rank == 0) {
         memcpy(root_map, map_store, store_size * sizeof(Vec_Type));
@@ -59,7 +61,7 @@ int serial_main(int argc, char **argv) {
     const int store_size = 100;
     Vec_Type map_store[store_size];
     
-    logistic(0.2, map_store, store_size);
+    logistic(starting_value, map_store, store_size);
     
     for (i=0; i<store_size; i++) {
         printf("%.12g \n", map_store[i]);
